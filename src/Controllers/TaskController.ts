@@ -91,3 +91,20 @@ export const deleteTask = async (req: Request, res: Response) => {
     return res.status(500).send({ message: "Internal server error", error });
   }
 };
+
+export const countUserCompletedTasks = async (req: Request, res: Response) => {
+  const decoded: any = jwt.decode(req.cookies.token);
+
+  try {
+    const completedTasks = await Task.count({
+      where: {
+        user_id: decoded.id,
+        isDone: true,
+      },
+    });
+
+    res.send({ TasksDone: completedTasks });
+  } catch (err) {
+    console.error(err);
+  }
+};

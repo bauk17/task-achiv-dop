@@ -23,6 +23,11 @@ Routes.get(
   UserProfileController.getProfile
 );
 
+Routes.post("/logout", verifyTokenMiddleware, (req: Request, res: Response) => {
+  res.clearCookie("token");
+  res.status(200).send({ message: "User logged out successfully!" });
+});
+
 // Task Management
 
 Routes.post("/newTask", verifyTokenMiddleware, TaskController.newTask);
@@ -39,6 +44,12 @@ Routes.put(
   TaskController.updateTask
 );
 
+Routes.get(
+  "/countCompletedTasks",
+  verifyTokenMiddleware,
+  TaskController.countUserCompletedTasks
+);
+
 Routes.put("/doneTask/:taskId", verifyTokenMiddleware, isTaskDone);
 
 // Password Recovery
@@ -47,4 +58,4 @@ Routes.post("/email-request", PasswordRecovery); // This send to user's email a 
 
 Routes.post("/change-password/:token", ChangePassword); // This route change the user password and uses token as parameter as well in params
 
-Routes.get("/get-tasks", UserController.getAllTasks);
+Routes.get("/getTasks", UserController.getAllTasks);
