@@ -13,7 +13,7 @@ SERVER.use(express.urlencoded({ extended: true }));
 
 SERVER.use(cookieParser());
 
-SERVER.use(cors());
+SERVER.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 SERVER.use(Routes);
 
